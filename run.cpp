@@ -1,4 +1,4 @@
-//Gate .evtln Event Data Based on 2D Histogram Plot of Y-Data vs X-Data
+//Gate QDC .evtln Event Data Based on 2D Histogram Plot of Y-Data vs X-Data
 //Program by: Cade Saugier, INPP EAL Ohio University
 
 /*
@@ -6,7 +6,7 @@ This C++ code is open source.
 Do whatever you want with it.
 I don't mind.
 
-For support: Go to room 115 EAL.
+For support: Go to room 115 EAL or E-mail cs192623@ohio.edu
 */
 
 #include <iostream>
