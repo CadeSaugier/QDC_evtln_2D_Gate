@@ -89,29 +89,47 @@ int main(int argc, char* argv[])
 		cout << "\n\n>>> Please Select Region of Interest...\n";
 		system(("python3 ./include/grab2d.py ./output_"+fileName+"/"+fileName+"_"+yName+"-"+xName+".xyz "+yName+" "+xName+" "+fileName).c_str());
 	
-	//Set Up Truth Arrays
-		cout << "\n\n>>> Filtering Data...\n";
-		bool xTruth[65536], yTruth[65536];
-		ifstream xFile, yFile;
-		xFile.open("./output_"+fileName+"/x.truth");
-		yFile.open("./output_"+fileName+"/y.truth");
-		string read;
-		for(int k=0; k<65536; k++)
+	//Build Truth Matrix
+		cout << "\n>>> Building Truth Table in RAM...\n";
+		ifstream truthFile;
+		truthFile.open("./output_"+fileName+"/xy.truth");
+		bool** truthMat=new bool*[65536];
+		for(int i=0; i<65536; i++)
 		{
-			xFile >> read;
-			if(stoi(read)==1) {xTruth[k]=true;}
-			else {xTruth[k]=false;}
-			yFile >> read;
-			if(stoi(read)==1) {yTruth[k]=true;}
-			else {yTruth[k]=false;}
+			truthMat[i]=new bool[65536];
 		}
-		xFile.close();
-		yFile.close();
+		for(int i=0; i<65536; i++)
+		{
+			for(int j=0; j<65536; j++)
+			{
+				truthMat[i][j]=false;
+			}
+		}
+		string read;
+		int a, b;
+		a=0;
+		b=0;
+		cout << ">>> Organizing Truth Table...\n";
+		while(!truthFile.eof())
+		{
+			truthFile >> read;
+			if(read=="-") {b++; a=0;}
+			else
+			{
+				a=stoi(read);
+				for(int w=0; w<cut; w++)
+				{
+					truthMat[a][b*cut+w]=true;
+				}
+			}
+		}
+		truthFile.close();
 	
 	//Build Histogram Objects
 		histo longHist, shortHist, psdHist, tofHist, chanHist;
 	
 	//Replay Data
+		cout << ">>> Filtering Data...\n";
 		ifstream dataFile;
 		dataFile.open(fileLoc);
 		ofstream eventLine;
@@ -125,7 +143,7 @@ int main(int argc, char* argv[])
 		{
 			total++;
 			dataFile >> read;
-			if(xTruth[get(read,xID)] and yTruth[get(read,yID)])
+			if(truthMat[get(read,xID)][get(read,yID)])
 			{
 				longHist.plug(get(read,2));
 				shortHist.plug(get(read,1));
@@ -166,6 +184,13 @@ int main(int argc, char* argv[])
 	//Clean Up
 		cout << "\n\n>>> Cleaning Up...\n";
 		system(("rm ./output_"+fileName+"/*.truth").c_str());
+		for(int i=0; i<65536; i++)
+		{
+			delete[] truthMat[i];
+			truthMat[i]=nullptr;
+		}
+		delete[] truthMat;
+		truthMat=nullptr;
 	
 	cout << ">>> Done! ^_^\n";
 	

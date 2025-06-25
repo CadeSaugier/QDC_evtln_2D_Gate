@@ -42,13 +42,6 @@ def main():
 			pix+=[[j,i]]
 		i+=1
 	
-	###Build Truth Lists
-	xTruth=[]
-	yTruth=[]
-	for i in range(65536):
-		xTruth+=[False]
-		yTruth+=[False]
-	
 	###Run Gate Ask
 	lass=LassoSelector(plotAx,take)
 	
@@ -60,29 +53,21 @@ def main():
 	
 	print('\n>>> Processing <<<')
 	
-	###Set Truth Lists
+	###Set Truth File
 	size=len(data)
 	chunk=int(65536/size)
-	for k in range(len(truth)):
-		if truth[k]:
+	a=0
+	truthList=[]
+	truthFile=open('./output_'+sys.argv[4]+'/xy.truth','w')
+	for k in truth:
+		if k:
 			for w in range(chunk):
-				yTruth[pix[k][1]*chunk+w]=True
-				xTruth[pix[k][0]*chunk+w]=True
-	
-	###Write Truth Files
-	xOut=open('./output_'+sys.argv[4]+'/x.truth','w')
-	yOut=open('./output_'+sys.argv[4]+'/y.truth','w')
-	for i in range(65536):
-		if yTruth[i]:
-			yOut.write('1\n')
-		else:
-			yOut.write('0\n')
-		if xTruth[i]:
-			xOut.write('1\n')
-		else:
-			xOut.write('0\n')
-	xOut.close()
-	yOut.close()
+				truthFile.write(str(a*chunk+w)+'\n')
+		a+=1
+		if a>=len(data):
+			a=0
+			truthFile.write('-\n')
+	truthFile.close()
 	
 	print('>>> Complete! <<<')
 
