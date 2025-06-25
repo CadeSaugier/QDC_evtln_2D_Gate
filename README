@@ -1,10 +1,12 @@
-QDC EVTLN 2D GATE v1.0.5 {5/09/2025}
+QDC EVTLN 2D GATE v1.1.5 {6/25/2025}
 
 --->What is this?
 >>>This code will read an event-line (.evtln) file type output from MVME MDPP-16 CSV RIPPER (or perhaps other ripper codes if Cade ever gets to it 0_0) and ask the user for two parameters to generate a 2D histogram. It will then allow the user to draw a continual line with the computer mouse on the generated plot. This loop will be used to select the ranges in each bin width that will correspond to what data is filtered when replaying the event-line file. All gated histograms will be generated in the .xy file format, as well as a gated .evtln file. This allows the user to load the new file back into the code and gate on the data via different parameters if so desired.
 
 --->How do I install this?
 >>>This program uses two C++ codes for processing and one Python code for plotting. Each C++ code can be compiled directly if so needed. On Linux systems g++ (the standard GNU C++ compiler) is required. Simply running "source local_install.sh" will generate a binary in the current directory. If you wish to install globally simply run g++ in your own fashion or symbolically link the output from local_install.sh.
+>>>REQUIREMENTS: C++ package "cstdlib" & Python package "matplotlib"
+>>>For best preformance your machine should have at least 4Gb of RAM.
 
 --->How do I use this?
 >>>The binary Gate2D takes 3 inputs.

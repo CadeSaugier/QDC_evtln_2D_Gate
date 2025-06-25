@@ -56,7 +56,7 @@ int find(string name)
 int main(int argc, char* argv[])
 {
 	cout << "\n<><><><><><><><><><> 2D HISTOGRAM GATE <><><><><><><><><><>\n";
-	cout << "\t--->Version 1.0.5\n";
+	cout << "\t--->Version 1.1.5\n";
 	cout << "\t--->By: Cade S.\n\n";
 	
 	//Record Inputs
