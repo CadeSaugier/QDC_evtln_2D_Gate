@@ -117,10 +117,10 @@ int main(int argc, char* argv[])
 	cout << "--->Replaying Event Line File...\n";
 	while(!dataFile.eof())
 	{
-		dataFile >> read;
 		valueX=static_cast<int>(get(read,xStop)/cut);
 		valueY=static_cast<int>(get(read,yStop)/cut);
 		dataMat[valueY][valueX]++;
+		dataFile >> read;
 	}
 	
 	//Close Data File
