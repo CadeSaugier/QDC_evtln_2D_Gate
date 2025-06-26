@@ -114,6 +114,7 @@ int main(int argc, char* argv[])
 	int valueX, valueY;
 	dataFile >> read;
 	dataFile >> read;
+	dataFile >> read;
 	cout << "--->Replaying Event Line File...\n";
 	while(!dataFile.eof())
 	{
