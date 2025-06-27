@@ -139,10 +139,9 @@ int main(int argc, char* argv[])
 		eventLine << read;
 		dataFile >> read;
 		eventLine << read << "\n";
+		dataFile >> read;
 		while(!dataFile.eof())
 		{
-			total++;
-			dataFile >> read;
 			if(truthMat[get(read,xID)][get(read,yID)])
 			{
 				longHist.plug(get(read,2));
@@ -153,6 +152,8 @@ int main(int argc, char* argv[])
 				eventLine << read << "\n";
 				save++;
 			}
+			total++;
+			dataFile >> read;
 		}
 		eventLine.close();
 		dataFile.close();
