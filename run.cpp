@@ -43,8 +43,8 @@ int get(string line, int stop)
 int find(string name)
 {
 	int send;
-	if(name=="short") {send=2;}
-	else if(name=="long") {send=1;}
+	if(name=="short") {send=1;}
+	else if(name=="long") {send=2;}
 	else if(name=="psd") {send=3;}
 	else if(name=="tof") {send=4;}
 	else if(name=="chan") {send=5;}
@@ -56,7 +56,7 @@ int find(string name)
 int main(int argc, char* argv[])
 {
 	cout << "\n<><><><><><><><><><> 2D HISTOGRAM GATE <><><><><><><><><><>\n";
-	cout << "\t--->Version 1.1.8\n";
+	cout << "\t--->Version 1.2.8\n";
 	cout << "\t--->By: Cade S.\n\n";
 	
 	//Record Inputs
