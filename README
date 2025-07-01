@@ -1,4 +1,4 @@
-QDC EVTLN 2D GATE v1.2.8 {6/27/2025}
+QDC EVTLN 2D GATE v1.2.9 {7/1/2025}
 
 --->What is this?
 >>>This code will read an event-line (.evtln) file type output from MVME MDPP-16 CSV RIPPER (or perhaps other ripper codes if Cade ever gets to it 0_0) and ask the user for two parameters to generate a 2D histogram. It will then allow the user to draw a continual line with the computer mouse on the generated plot. This loop will be used to select the ranges in each bin width that will correspond to what data is filtered when replaying the event-line file. All gated histograms will be generated in the .xy file format, as well as a gated .evtln file. This allows the user to load the new file back into the code and gate on the data via different parameters if so desired.

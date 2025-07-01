@@ -56,7 +56,7 @@ int find(string name)
 int main(int argc, char* argv[])
 {
 	cout << "\n<><><><><><><><><><> 2D HISTOGRAM GATE <><><><><><><><><><>\n";
-	cout << "\t--->Version 1.2.8\n";
+	cout << "\t--->Version 1.2.9\n";
 	cout << "\t--->By: Cade S.\n\n";
 	
 	//Record Inputs
@@ -138,7 +138,7 @@ int main(int argc, char* argv[])
 		dataFile >> read;
 		eventLine << read;
 		dataFile >> read;
-		eventLine << read << "\n";
+		eventLine << " " << read << "\n";
 		dataFile >> read;
 		while(!dataFile.eof())
 		{
