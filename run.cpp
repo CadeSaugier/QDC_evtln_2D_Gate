@@ -56,7 +56,7 @@ int find(string name)
 int main(int argc, char* argv[])
 {
 	cout << "\n<><><><><><><><><><> 2D HISTOGRAM GATE <><><><><><><><><><>\n";
-	cout << "\t--->Version 1.2.9\n";
+	cout << "\t--->Version 1.3.1\n";
 	cout << "\t--->By: Cade S.\n\n";
 	
 	//Record Inputs
@@ -134,14 +134,23 @@ int main(int argc, char* argv[])
 		dataFile.open(fileLoc);
 		ofstream eventLine;
 		eventLine.open("./output_"+fileName+"/"+fileName+"_"+yName+"-"+xName+".evtln");
-		int save=0, total=0;
+		int save=0, abvsat=0, total=0;
 		dataFile >> read;
 		eventLine << read;
 		dataFile >> read;
 		eventLine << " " << read << "\n";
 		dataFile >> read;
+		int longcheck=get(read,2);
 		while(!dataFile.eof())
 		{
+			if(longcheck>=65536)
+			{
+				abvsat++;
+				total++;
+				dataFile >> read;
+				longcheck=get(read,2);
+				continue;
+			}
 			if(truthMat[get(read,xID)][get(read,yID)])
 			{
 				longHist.plug(get(read,2));
@@ -154,10 +163,12 @@ int main(int argc, char* argv[])
 			}
 			total++;
 			dataFile >> read;
+			longcheck=get(read,2);
 		}
 		eventLine.close();
 		dataFile.close();
 		cout << "Selected Events\t=== " << save << endl;
+		cout << "Above Saturation=== " << abvsat << endl;
 		cout << "Total Events\t=== " << total << endl;
 	
 	//Build .xy Files
