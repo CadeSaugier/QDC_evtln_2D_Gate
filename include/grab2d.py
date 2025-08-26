@@ -42,11 +42,11 @@ def main():
 			pix+=[[j,i]]
 		i+=1
 	
-	###Run Gate Ask
-	lass=LassoSelector(plotAx,take)
-	
 	###Save Figure
 	pyplot.savefig('./output_'+sys.argv[4]+'/gate_'+sys.argv[2]+'-'+sys.argv[3]+'.pdf',format='pdf')
+	
+	###Run Gate Ask
+	lass=LassoSelector(plotAx,take)
 	
 	###Plot Data
 	pyplot.show()
