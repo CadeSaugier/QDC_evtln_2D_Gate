@@ -1,4 +1,4 @@
-QDC EVTLN 2D GATE v1.3.3 {10/3/2025}
+QDC EVTLN 2D GATE v1.4.3 {10/3/2025}
 
 --->What is this?
 >>>This code will read an event-line (.evtln) file type output from MVME MDPP-16 CSV RIPPER (or perhaps other ripper codes if Cade ever gets to it 0_0) and ask the user for two parameters to generate a 2D histogram. It will then allow the user to draw a continual line with the computer mouse on the generated plot. This loop will be used to select the ranges in each bin width that will correspond to what data is filtered when replaying the event-line file. All gated histograms will be generated in the .xy file format, as well as a gated .evtln file. This allows the user to load the new file back into the code and gate on the data via different parameters if so desired.
@@ -14,13 +14,23 @@ QDC EVTLN 2D GATE v1.3.3 {10/3/2025}
 >>>The secondary arguments are the data sets the user is interested in gating. The QDC options are as follows: long, short, chan (Channel Time), psd, tof. This takes the form Data-Y vs Data-X
 
 --->Adjusting 2D Histogram Resolution
->>>The bin width of each axis for the 2D histogram can be adjusted in the run.cpp code. On line #84 "int cut=256;" may be adjusted as desired. Note that after adjusting this, the code must be recompiled again with g++. This may simply be done by reinstalling. [Fair Warning! Make the bin width as small as desired, BUT I hope you have a large amount of RAM.]
+>>>The bin width of each axis for the 2D histogram can be adjusted in the run.cpp code. On line #116 "int cut=256;" may be adjusted as desired. Note that after adjusting this, the code must be recompiled again with g++. This may simply be done by reinstalling. [Fair Warning! Make the bin width as small as desired, BUT I hope you have a large amount of RAM.]
+
+--->Saving and Using Gate Files
+>>>If you'd like to use the same gate on different files, a request to build a new gate, or use a previous gate may be made.
+>>>To build a new gate file simply add the flag --buildGate at the end of the current argument. This will add a .gate file to the output directory. This file may be used later on different data files.
+>>>To call a gate file to be used, add the flag and file name argument --useGate name_of_gate.gate. This will tell the program to open the gate file and apply it to the .evtln data.
+>>>WARNING! Each gate file is generated via pixel data. This means if you were to gate by means of psd vs long at a resolution of 256x256, the gate file will be built for that scenario. If you were the to change the resolution or parameters, such as going to tof vs psd, the gate will yield very different results. This is because the gate file will simply draw pixel for pixel the same shape on top of the new data.
 
 --->Examples:
 	Gate via PSD vs Long)
 		$>./Gate2D /path/to/your/file/MyExcellentData.evtln psd long
 	Gate via TOF vs Long)
 		$>./Gate2D /path/to/some/more/excellent/data/clyc_run_015.evtln tof long
+	Build a PSD vs Short Gate File)
+		$>./Gate2D /path/to/the/excellent/data/my_data.evtln psd short --buildGate
+	Use a Previous Gate)
+		$>./Gate2D /this/data/right/here/theVeryImportantData.evtln tof psd --useGate tof_psd_512x512.gate
 
 --->Questions?
 >>>Find Cade S. in EAL 115

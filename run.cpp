@@ -56,7 +56,7 @@ int find(string name)
 int main(int argc, char* argv[])
 {
 	cout << "\n<><><><><><><><><><> 2D HISTOGRAM GATE <><><><><><><><><><>\n";
-	cout << "\t--->Version 1.3.3\n";
+	cout << "\t--->Version 1.4.3\n";
 	cout << "\t--->By: Cade S.\n\n";
 	
 	//Record Inputs
@@ -66,6 +66,38 @@ int main(int argc, char* argv[])
 		xName=argv[3];
 		int xID=find(xName);
 		int yID=find(yName);
+		bool buildGfile=false;
+		bool readGfile=false;
+		string gateFileName;
+		ifstream gateFile;
+		if(argc>4) 
+		{
+			string lastArg=argv[4];
+			if(lastArg=="--buildGate") {buildGfile=true;}
+			else if(lastArg=="--useGate")
+			{
+				if(argc>5)
+				{
+					gateFileName=argv[5];
+					if(gateFileName.length()<5 or gateFileName.substr(gateFileName.length()-5,5)!=".gate")
+					{
+						cout << ">>> Error! File Type Not .gate!\n";
+						cout << ">>> Skipping Gate File...\n";
+					}
+					else
+					{
+						gateFile.open(gateFileName);
+						if(!gateFile.is_open()) {cout << ">>> Error Opening Gate File...\n>>> Skipping Gate File...\n";}
+						else {readGfile=true;}
+						gateFile.close();
+					}
+				}
+				else
+				{
+					cout << ">>> Error! No Gate File Given...\n";
+				}
+			}	
+		}
 	
 	//Get File Name
 		string fileName;
@@ -86,13 +118,17 @@ int main(int argc, char* argv[])
 		if(check!=0) {cout << ">>> Build Error!\n"; exit(0);}
 	
 	//Ask for 2D Gating
-		cout << "\n\n>>> Please Select Region of Interest...\n";
-		system(("python3 ./include/grab2d.py ./output_"+fileName+"/"+fileName+"_"+yName+"-"+xName+".xyz "+yName+" "+xName+" "+fileName).c_str());
+		if(!readGfile)
+		{
+			cout << "\n\n>>> Please Select Region of Interest...\n";
+			system(("python3 ./include/grab2d.py ./output_"+fileName+"/"+fileName+"_"+yName+"-"+xName+".xyz "+yName+" "+xName+" "+fileName).c_str());
+		}
 	
 	//Build Truth Matrix
 		cout << "\n>>> Building Truth Table in RAM...\n";
 		ifstream truthFile;
-		truthFile.open("./output_"+fileName+"/xy.truth");
+		if(readGfile) {truthFile.open(gateFileName);}
+		else {truthFile.open("./output_"+fileName+"/xy.truth");}
 		bool** truthMat=new bool*[65536];
 		for(int i=0; i<65536; i++)
 		{
@@ -172,7 +208,7 @@ int main(int argc, char* argv[])
 		cout << "Total Events\t=== " << total << endl;
 	
 	//Build .xy Files
-		cout << "\n>>> Building Histogram .xy Files...";
+		cout << "\n>>> Building Histogram .xy Files...\n";
 		ofstream longFile, shortFile, psdFile, tofFile, chanFile;
 		longFile.open("./output_"+fileName+"/long_gated-"+yName+"-"+xName+".xy");
 		shortFile.open("./output_"+fileName+"/short_gated-"+yName+"-"+xName+".xy");
@@ -193,9 +229,12 @@ int main(int argc, char* argv[])
 		tofFile.close();
 		chanFile.close();
 	
+	//Check if Asked for Gate File
+		if(buildGfile) {cout << ">>> Making Gate File...\n"; system(("cp ./output_"+fileName+"/*.truth ./output_"+fileName+"/"+yName+"_"+xName+"_"+to_string(65536/cut)+"x"+to_string(65536/cut)+".gate").c_str());}
+	
 	//Clean Up
 		cout << "\n\n>>> Cleaning Up...\n";
-		system(("rm ./output_"+fileName+"/*.truth").c_str());
+		if(!readGfile) {system(("rm ./output_"+fileName+"/*.truth").c_str());}
 		for(int i=0; i<65536; i++)
 		{
 			delete[] truthMat[i];
