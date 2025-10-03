@@ -43,7 +43,8 @@ def main():
 		i+=1
 	
 	###Save Figure
-	pyplot.savefig('./output_'+sys.argv[4]+'/gate_'+sys.argv[2]+'-'+sys.argv[3]+'.pdf',format='pdf')
+	pyplot.savefig('./output_'+sys.argv[4]+'/plot_'+sys.argv[2]+'-'+sys.argv[3]+'.pdf',format='pdf')
+	print('--->Saved Figure '+'plot_'+sys.argv[2]+'-'+sys.argv[3]+'.pdf')
 	
 	###Run Gate Ask
 	lass=LassoSelector(plotAx,take)
@@ -53,11 +54,53 @@ def main():
 	
 	print('\n>>> Processing <<<')
 	
-	###Set Truth File
+	###Set Constants
 	size=len(data)
 	chunk=int(65536/size)
+	
+	###Record Selection Geometry
+	xloop=[]
+	yloop=[]
+	xedge=[]
+	yedge=[]
+	up=0
+	for i in range(len(truth)):
+		if truth[i]:
+			xloop+=[i-(up*size)]
+			yloop+=[up]
+		if i>((up+1)*size)-2:
+			up+=1
+	for k in range(size):
+		setVal=[]
+		if k in yloop:
+			for i in range(len(xloop)):
+				if yloop[i]==k:
+					setVal+=[xloop[i]]
+			xedge+=[max(setVal)]
+			xedge+=[min(setVal)]
+			yedge+=[k]
+			yedge+=[k]
+	
+	###Generate Figure to Save
+	fig=pyplot.figure(2)
+	plotAx=fig.add_subplot(1,1,1)
+	draw=plotAx.imshow(data,cmap='viridis',norm=colors.LogNorm(),origin='lower')
+	plotAx.plot(xedge,yedge,color='red',alpha=0.35)
+	fig.colorbar(draw,ax=plotAx)
+	pyplot.xlabel(sys.argv[3])
+	pyplot.ylabel(sys.argv[2])
+	pyplot.title(dataFileName)
+	pyplot.savefig('./output_'+sys.argv[4]+'/gate_'+sys.argv[2]+'-'+sys.argv[3]+'.pdf',format='pdf')
+	print('--->Saved Figure '+'gate_'+sys.argv[2]+'-'+sys.argv[3]+'.pdf')
+	
+	###Clean Up
+	del xloop
+	del yloop
+	del xedge
+	del yedge
+	
+	###Set Truth File
 	a=0
-	truthList=[]
 	truthFile=open('./output_'+sys.argv[4]+'/xy.truth','w')
 	for k in truth:
 		if k:

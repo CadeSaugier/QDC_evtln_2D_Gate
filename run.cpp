@@ -56,7 +56,7 @@ int find(string name)
 int main(int argc, char* argv[])
 {
 	cout << "\n<><><><><><><><><><> 2D HISTOGRAM GATE <><><><><><><><><><>\n";
-	cout << "\t--->Version 1.3.2\n";
+	cout << "\t--->Version 1.3.3\n";
 	cout << "\t--->By: Cade S.\n\n";
 	
 	//Record Inputs
@@ -129,7 +129,7 @@ int main(int argc, char* argv[])
 		histo longHist, shortHist, psdHist, tofHist, chanHist;
 	
 	//Replay Data
-		cout << ">>> Filtering Data...\n";
+		cout << ">>> Filtering Data...\n\n";
 		ifstream dataFile;
 		dataFile.open(fileLoc);
 		ofstream eventLine;
